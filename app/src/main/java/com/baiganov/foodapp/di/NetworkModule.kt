@@ -1,9 +1,10 @@
 package com.baiganov.foodapp.di
 
-import com.baiganov.foodapp.Constants.Companion.BASE_URL
-import com.baiganov.foodapp.FoodRecipesApi
+import com.baiganov.foodapp.util.Constants.Companion.BASE_URL
+import com.baiganov.foodapp.data.network.FoodRecipesApi
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.DefineComponent
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
@@ -18,7 +19,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideHttpClient(): OkHttpClient {
+    fun provideHttpClient() : OkHttpClient {
         return OkHttpClient.Builder()
             .readTimeout(15, TimeUnit.SECONDS)
             .connectTimeout(15, TimeUnit.SECONDS)
@@ -44,10 +45,9 @@ object NetworkModule {
             .build()
     }
 
-
     @Singleton
     @Provides
     fun provideApiService(retrofit: Retrofit): FoodRecipesApi {
-        return  retrofit.create(FoodRecipesApi::class.java)
+        return retrofit.create(FoodRecipesApi::class.java)
     }
 }
