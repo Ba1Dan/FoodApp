@@ -1,4 +1,4 @@
-package com.baiganov.foodapp
+package com.baiganov.foodapp.viewmodels
 
 import android.app.Application
 import android.content.Context
