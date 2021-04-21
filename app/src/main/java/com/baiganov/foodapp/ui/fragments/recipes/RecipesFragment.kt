@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.baiganov.foodapp.viewmodels.MainViewModel
 import com.baiganov.foodapp.R
@@ -22,6 +23,7 @@ import com.baiganov.foodapp.util.NetworkResult
 import com.baiganov.foodapp.viewmodels.RecipesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_recipes.view.*
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RecipesFragment : Fragment() {
@@ -45,8 +47,20 @@ class RecipesFragment : Fragment() {
         mView = inflater.inflate(R.layout.fragment_recipes, container, false)
 
         setupRecyclerView()
-        requestApiData()
+        readDatabase()
         return mView
+    }
+
+    private fun readDatabase() {
+        lifecycleScope.launch {
+            mainViewModel.readRecipes.observe(viewLifecycleOwner, { data ->
+                if (data.isNotEmpty()) {
+                    mAdapter.setData(data[0].foodRecipe)
+                } else {
+                    requestApiData()
+                }
+            })
+        }
     }
 
     private fun requestApiData() {
@@ -59,6 +73,7 @@ class RecipesFragment : Fragment() {
                 }
                 is NetworkResult.Error -> {
                     hideShimmerEffect()
+                    loadDataFromCache()
                     Toast.makeText(
                         requireContext(),
                         response.message.toString(),
@@ -76,6 +91,16 @@ class RecipesFragment : Fragment() {
         mView.recyclerview.adapter = mAdapter
         mView.recyclerview.layoutManager = LinearLayoutManager(requireContext())
         showShimmerEffect()
+    }
+
+    private fun loadDataFromCache() {
+        lifecycleScope.launch {
+            mainViewModel.readRecipes.observe(viewLifecycleOwner, { data ->
+                if (data.isNotEmpty()) {
+                    mAdapter.setData(data[0].foodRecipe)
+                }
+            })
+        }
     }
 
     private fun showShimmerEffect() {
