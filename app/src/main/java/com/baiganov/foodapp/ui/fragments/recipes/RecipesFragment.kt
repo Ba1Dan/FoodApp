@@ -1,6 +1,7 @@
 package com.baiganov.foodapp.ui.fragments.recipes
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.baiganov.foodapp.viewmodels.MainViewModel
 import com.baiganov.foodapp.R
 import com.baiganov.foodapp.adapters.RecipesAdapter
+import com.baiganov.foodapp.databinding.FragmentRecipesBinding
 import com.baiganov.foodapp.util.Constants.Companion.API_KEY
 import com.baiganov.foodapp.util.Constants.Companion.QUERY_ADD_RECIPE_INFORMATION
 import com.baiganov.foodapp.util.Constants.Companion.QUERY_API_KEY
@@ -20,6 +22,7 @@ import com.baiganov.foodapp.util.Constants.Companion.QUERY_FILL_INGREDIENTS
 import com.baiganov.foodapp.util.Constants.Companion.QUERY_NUMBER
 import com.baiganov.foodapp.util.Constants.Companion.QUERY_TYPE
 import com.baiganov.foodapp.util.NetworkResult
+import com.baiganov.foodapp.util.observeOnce
 import com.baiganov.foodapp.viewmodels.RecipesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_recipes.view.*
@@ -28,11 +31,12 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class RecipesFragment : Fragment() {
 
-    private lateinit var mView: View
+    private var _binding: FragmentRecipesBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var mainViewModel: MainViewModel
     private lateinit var recipesViewModel: RecipesViewModel
     private val mAdapter by lazy { RecipesAdapter() }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,18 +48,20 @@ class RecipesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mView = inflater.inflate(R.layout.fragment_recipes, container, false)
-
+        _binding = FragmentRecipesBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = this
+        binding.mainViewModel = mainViewModel
         setupRecyclerView()
         readDatabase()
-        return mView
+        return binding.root
     }
 
     private fun readDatabase() {
         lifecycleScope.launch {
-            mainViewModel.readRecipes.observe(viewLifecycleOwner, { data ->
+            mainViewModel.readRecipes.observeOnce(viewLifecycleOwner, { data ->
                 if (data.isNotEmpty()) {
                     mAdapter.setData(data[0].foodRecipe)
+                    hideShimmerEffect()
                 } else {
                     requestApiData()
                 }
@@ -88,8 +94,8 @@ class RecipesFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        mView.recyclerview.adapter = mAdapter
-        mView.recyclerview.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerview.adapter = mAdapter
+        binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
         showShimmerEffect()
     }
 
@@ -104,11 +110,15 @@ class RecipesFragment : Fragment() {
     }
 
     private fun showShimmerEffect() {
-        mView.recyclerview.showShimmer()
+        binding.recyclerview.showShimmer()
     }
 
     private fun hideShimmerEffect() {
-        mView.recyclerview.hideShimmer()
+        binding.recyclerview.hideShimmer()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

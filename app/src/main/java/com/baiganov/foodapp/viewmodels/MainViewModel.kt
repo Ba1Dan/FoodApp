@@ -45,7 +45,7 @@ class MainViewModel @Inject constructor(
                 val response = repository.remote.getRecipes(queries)
                 recipesResponse.value = handleFoodRecipesResponse(response)
 
-                val foodRecipe = recipesResponse.value!!.data
+                val foodRecipe = recipesResponse.value?.data
                 if (foodRecipe != null) {
                     offlineCacheRecipes(foodRecipe)
                 }
@@ -63,7 +63,7 @@ class MainViewModel @Inject constructor(
         insertRecipes(recipesEntity)
     }
 
-    private fun handleFoodRecipesResponse(response: Response<FoodRecipe>): NetworkResult<FoodRecipe>? {
+    private fun handleFoodRecipesResponse(response: Response<FoodRecipe>): NetworkResult<FoodRecipe> {
         when {
             response.message().toString().contains("timeout") -> {
                 return NetworkResult.Error(message = "Timeout")
@@ -71,13 +71,13 @@ class MainViewModel @Inject constructor(
             response.code() == 402 -> {
                 return NetworkResult.Error(message="API Key Limited.")
             }
-            response.body()!!.results.isNullOrEmpty() -> {
+            response.body()?.results.isNullOrEmpty() -> {
                 Log.d("DEBUG", "null")
                 return NetworkResult.Error(message="Recipes not found.")
             }
             response.isSuccessful -> {
-                val foodRecipes = response.body()
-                return NetworkResult.Success(foodRecipes!!)
+                val foodRecipes: FoodRecipe = response.body()!!
+                return NetworkResult.Success(foodRecipes)
             }
             else -> {
                 return NetworkResult.Error(message = response.message())
