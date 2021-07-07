@@ -50,7 +50,6 @@ class MainViewModel @Inject constructor(
                     offlineCacheRecipes(foodRecipe)
                 }
             } catch (e: Exception) {
-                Log.d("DEBUG", e.toString())
                 recipesResponse.value = NetworkResult.Error(message = "Recipes not found.")
             }
         } else {
@@ -72,7 +71,6 @@ class MainViewModel @Inject constructor(
                 return NetworkResult.Error(message="API Key Limited.")
             }
             response.body()?.results.isNullOrEmpty() -> {
-                Log.d("DEBUG", "null")
                 return NetworkResult.Error(message="Recipes not found.")
             }
             response.isSuccessful -> {
