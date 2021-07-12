@@ -2,32 +2,26 @@ package com.baiganov.foodapp.ui.fragments.recipes
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.baiganov.foodapp.viewmodels.MainViewModel
 import com.baiganov.foodapp.R
 import com.baiganov.foodapp.adapters.RecipesAdapter
 import com.baiganov.foodapp.databinding.FragmentRecipesBinding
-import com.baiganov.foodapp.util.Constants.Companion.API_KEY
-import com.baiganov.foodapp.util.Constants.Companion.QUERY_ADD_RECIPE_INFORMATION
-import com.baiganov.foodapp.util.Constants.Companion.QUERY_API_KEY
-import com.baiganov.foodapp.util.Constants.Companion.QUERY_DIET
-import com.baiganov.foodapp.util.Constants.Companion.QUERY_FILL_INGREDIENTS
-import com.baiganov.foodapp.util.Constants.Companion.QUERY_NUMBER
-import com.baiganov.foodapp.util.Constants.Companion.QUERY_TYPE
+import com.baiganov.foodapp.util.NetworkListener
 import com.baiganov.foodapp.util.NetworkResult
 import com.baiganov.foodapp.util.observeOnce
+import com.baiganov.foodapp.viewmodels.MainViewModel
 import com.baiganov.foodapp.viewmodels.RecipesViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_recipes.view.*
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -41,6 +35,8 @@ class RecipesFragment : Fragment() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var recipesViewModel: RecipesViewModel
     private val mAdapter by lazy { RecipesAdapter() }
+
+    private lateinit var networkListener: NetworkListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,10 +52,27 @@ class RecipesFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.mainViewModel = mainViewModel
         setupRecyclerView()
-        readDatabase()
+
+        recipesViewModel.readBackOnline.observe(viewLifecycleOwner, {
+            recipesViewModel.backOnline = it
+        })
+
+        lifecycleScope.launch {
+            networkListener = NetworkListener()
+            networkListener.checkNetworkAvailability(requireContext()).collect { status ->
+                Log.d("NetworkListener", status.toString())
+                recipesViewModel.networkStatus = status
+                recipesViewModel.showNetworkStatus()
+                readDatabase()
+            }
+        }
 
         binding.recipesFab.setOnClickListener {
-            findNavController().navigate(R.id.action_recipesFragment_to_recipesBottomSheet)
+            if (recipesViewModel.networkStatus) {
+                findNavController().navigate(R.id.action_recipesFragment_to_recipesBottomSheet)
+            } else {
+                recipesViewModel.showNetworkStatus()
+            }
         }
         return binding.root
     }
