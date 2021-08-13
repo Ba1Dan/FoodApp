@@ -45,11 +45,11 @@
 
         <ImageView
             android:id="@+id/error_imageView"
+            readApiResponse="@{mainViewModel.recipesResponse}"
+            readDatabase="@{mainViewModel.readRecipes}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0.5"
-            readApiResponse="@{mainViewModel.recipesResponse}"
-            readDatabase="@{mainViewModel.readRecipes}"
             android:src="@drawable/ic_sad"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"

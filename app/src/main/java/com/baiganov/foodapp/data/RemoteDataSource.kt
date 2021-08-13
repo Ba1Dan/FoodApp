@@ -1,6 +1,5 @@
 package com.baiganov.foodapp.data
 
-import android.util.Log
 import com.baiganov.foodapp.data.network.FoodRecipesApi
 import com.baiganov.foodapp.models.FoodRecipe
 import retrofit2.Response
