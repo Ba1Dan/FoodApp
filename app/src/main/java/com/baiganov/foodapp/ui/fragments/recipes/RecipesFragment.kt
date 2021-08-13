@@ -99,6 +99,9 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
+        if (query != null) {
+            searchApiData(query)
+        }
         return true
     }
 
@@ -109,6 +112,31 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
     private fun requestApiData() {
         mainViewModel.getRecipes(recipesViewModel.applyQueries())
         mainViewModel.recipesResponse.observe(viewLifecycleOwner, { response ->
+            when(response) {
+                is NetworkResult.Success -> {
+                    hideShimmerEffect()
+                    response.data?.let { mAdapter.setData(it) }
+                }
+                is NetworkResult.Error -> {
+                    hideShimmerEffect()
+                    loadDataFromCache()
+                    Toast.makeText(
+                        requireContext(),
+                        response.message.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                is NetworkResult.Loading -> {
+                    showShimmerEffect()
+                }
+            }
+        })
+    }
+
+    private fun searchApiData(searchQuery: String) {
+        showShimmerEffect()
+        mainViewModel.searchRecipes(recipesViewModel.applySearchQuery(searchQuery))
+        mainViewModel.searchedRecipesResponse.observe(viewLifecycleOwner, { response ->
             when(response) {
                 is NetworkResult.Success -> {
                     hideShimmerEffect()
@@ -145,8 +173,6 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
             })
         }
     }
-
-
 
     private fun showShimmerEffect() {
         binding.recyclerview.showShimmer()
