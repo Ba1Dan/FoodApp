@@ -12,6 +12,7 @@ import coil.load
 import com.baiganov.foodapp.R
 import com.baiganov.foodapp.models.Result
 import com.baiganov.foodapp.ui.fragments.recipes.RecipesFragmentDirections
+import org.jsoup.Jsoup
 
 object RecipesRowBinding {
 
@@ -59,6 +60,15 @@ object RecipesRowBinding {
                     )
                 }
             }
+        }
+    }
+
+    @BindingAdapter("parseHtml")
+    @JvmStatic
+    fun parseHtml(textView: TextView, description: String?) {
+        if (description != null) {
+            val desc = Jsoup.parse(description).text()
+            textView.text = desc
         }
     }
 
