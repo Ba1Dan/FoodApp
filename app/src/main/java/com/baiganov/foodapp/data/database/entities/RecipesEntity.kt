@@ -1,4 +1,4 @@
-package com.baiganov.foodapp.data.database
+package com.baiganov.foodapp.data.database.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

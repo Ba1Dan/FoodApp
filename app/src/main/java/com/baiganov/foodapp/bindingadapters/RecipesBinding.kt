@@ -5,7 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
-import com.baiganov.foodapp.data.database.RecipesEntity
+import com.baiganov.foodapp.data.database.entities.RecipesEntity
 import com.baiganov.foodapp.models.FoodRecipe
 import com.baiganov.foodapp.util.NetworkResult
 
