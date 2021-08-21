@@ -16,6 +16,10 @@ import com.baiganov.foodapp.databinding.ActivityDetailBinding
 import com.baiganov.foodapp.ui.fragments.ingredients.IngredientsFragment
 import com.baiganov.foodapp.ui.fragments.instructions.InstructionsFragment
 import com.baiganov.foodapp.ui.fragments.overview.OverviewFragment
+import com.baiganov.foodapp.util.Constants.Companion.RECIPES_BUNDLE
+import com.baiganov.foodapp.util.Constants.Companion.TAB_TITLE_INGREDIENTS
+import com.baiganov.foodapp.util.Constants.Companion.TAB_TITLE_INSTRUCTIONS
+import com.baiganov.foodapp.util.Constants.Companion.TAB_TITLE_OVERVIEW
 import com.baiganov.foodapp.viewmodels.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
@@ -47,12 +51,12 @@ class DetailActivity : AppCompatActivity() {
         fragments.add(InstructionsFragment())
 
         val titles = ArrayList<String>()
-        titles.add("Overview")
-        titles.add("Ingredients")
-        titles.add("Instructions")
+        titles.add(TAB_TITLE_OVERVIEW)
+        titles.add(TAB_TITLE_INGREDIENTS)
+        titles.add(TAB_TITLE_INSTRUCTIONS)
 
         val resultBundle = Bundle()
-        resultBundle.putParcelable("recipeBundle", args.result)
+        resultBundle.putParcelable(RECIPES_BUNDLE, args.result)
 
         val pagerAdapter = PagerAdapter(
             resultBundle,
@@ -95,7 +99,7 @@ class DetailActivity : AppCompatActivity() {
             )
         mainViewModel.deleteFavouriteRecipe(favoritesEntity)
         changeMenuDrawable(item, R.drawable.ic_star_border)
-        showSnackBar("Removed from Favorites.")
+        showSnackBar(binding.root.context.getString(R.string.snack_bar_removed_favourite))
         recipeSaved = false
     }
 
@@ -107,9 +111,10 @@ class DetailActivity : AppCompatActivity() {
             )
         mainViewModel.insertFavouriteRecipe(favoritesEntity)
         changeMenuDrawable(item, R.drawable.ic_star)
-        showSnackBar("Recipe saved.")
+        showSnackBar(binding.root.context.getString(R.string.snack_bar_saved_favourite))
     }
 
+    //Check if there are saved recipes in the database
     private fun checkSavedRecipes(menuItem: MenuItem) {
         mainViewModel.readFavouriteRecipes.observe(this, { favoritesEntity ->
             try {
@@ -137,7 +142,6 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun changeMenuDrawable(item: MenuItem, drawable: Int) {
-        Log.d("DetailsActivity", drawable.toString())
         item.setIcon(drawable)
     }
 }

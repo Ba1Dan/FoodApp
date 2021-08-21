@@ -38,4 +38,9 @@
     <string name="main_imageview">main imageview</string>
     <string name="save_to_favourites">Save to favourites</string>
     <string name="no_favorite_recipes">No Favorite Recipes.</string>
+
+    //
+    <string name="snack_bar_removed_favourite">Removed from Favorites.</string>
+    <string name="snack_bar_saved_favourite">Recipe saved.</string>
+
 </resources>
