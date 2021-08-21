@@ -115,11 +115,10 @@ class DetailActivity : AppCompatActivity() {
             try {
                 for (savedRecipe in favoritesEntity) {
                     if (savedRecipe.result.id == args.result.id) {
+                        Log.d("DetailsActivity", savedRecipe.result.title)
                         changeMenuDrawable(menuItem, R.drawable.ic_star)
                         savedRecipeId = savedRecipe.id
                         recipeSaved = true
-                    } else {
-                        changeMenuDrawable(menuItem, R.drawable.ic_star_border)
                     }
                 }
             } catch (e: Exception) {
@@ -138,6 +137,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun changeMenuDrawable(item: MenuItem, drawable: Int) {
+        Log.d("DetailsActivity", drawable.toString())
         item.setIcon(drawable)
     }
 }
