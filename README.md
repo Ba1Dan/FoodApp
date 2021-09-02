@@ -17,7 +17,6 @@ Android mobile application where you can find recipes, read the ingredients,how 
 # Tech stack
 - 100% [Kotlin](https://kotlinlang.org/) based + [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) + [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) for asynchronous.
 - [Dagger Hilt](https://dagger.dev/hilt)
-- [Accompanist](https://github.com/google/accompanist)
 - JetPack
   - [Navigation](https://developer.android.com/guide/navigation)
   - [Lifecycle](https://developer.android.com/jetpack/androidx/releases/lifecycle)
