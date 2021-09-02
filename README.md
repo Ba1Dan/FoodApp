@@ -1,7 +1,7 @@
 <h1 align="center">FoodApp</h1>
 
 # General info
-A mobile application where you can find recipes, read the ingredients,how to cook and also add recipes to Favorite 
+Android mobile application where you can find recipes, read the ingredients,how to cook and also add recipes to Favorite 
 
 # Screenshots
 <p align="center">
