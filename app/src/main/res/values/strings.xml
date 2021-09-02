@@ -43,5 +43,6 @@
     <string name="snack_bar_removed_favourite">Removed from Favorites.</string>
     <string name="snack_bar_saved_favourite">Recipe saved.</string>
     <string name="delete_favourite_menu">delete favourite menu</string>
+    <string name="delete_all">Delete All</string>
 
 </resources>
