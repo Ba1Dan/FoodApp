@@ -14,7 +14,7 @@ A mobile application where you can find recipes, read the ingredients,how to coo
   <img src="https://user-images.githubusercontent.com/53014698/131824447-8ad4af6b-d792-41ad-8fbc-d70bee753f63.jpg" width="25%"/>
 </p>
 
-# Tech stack & Open-source libraries
+# Tech stack
 - 100% [Kotlin](https://kotlinlang.org/) based + [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) + [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) for asynchronous.
 - [Dagger Hilt](https://dagger.dev/hilt)
 - [Accompanist](https://github.com/google/accompanist)
