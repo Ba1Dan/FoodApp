@@ -5,13 +5,7 @@ Android mobile application where you can find recipes, read the ingredients,how 
 
 # Screenshots
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/53014698/131824115-7354e1d0-e08d-4353-b500-0f7348e5e8f1.jpg" width="25%"/>
-  <img src="https://user-images.githubusercontent.com/53014698/131824413-26f26fe0-d4ee-442e-ac2c-315707eeab5c.jpg" width="25%"/>
-  <img src="https://user-images.githubusercontent.com/53014698/131824439-a748c4e9-050f-4018-9760-97468d74ed1c.jpg" width="25%"/>
-  <img src="https://user-images.githubusercontent.com/53014698/131824422-f57deb0d-31de-4cb9-84b2-fb2e85bd955b.jpg" width="25%"/>
-  <img src="https://user-images.githubusercontent.com/53014698/131824429-dc0df4d3-1388-4ed2-b1f0-62dd87021a35.jpg" width="25%"/>
-  <img src="https://user-images.githubusercontent.com/53014698/131824433-4dfe69f0-0366-473b-b2f3-c0b737832616.jpg" width="25%"/>
-  <img src="https://user-images.githubusercontent.com/53014698/131824447-8ad4af6b-d792-41ad-8fbc-d70bee753f63.jpg" width="25%"/>
+  <img src="https://user-images.githubusercontent.com/53014698/150687720-0cf0d0c0-9d52-4cc6-9c76-5161d31ad57b.gif" width="25%"/>
 </p>
 
 # Tech stack
